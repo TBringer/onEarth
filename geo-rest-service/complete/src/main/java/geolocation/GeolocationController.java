@@ -32,7 +32,7 @@ public class GeolocationController {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 content = content+inputLine+"\n";
-                System.out.println(inputLine);
+                //System.out.println(inputLine);
             }
             in.close();
         } catch (IOException e) {
@@ -51,11 +51,11 @@ public class GeolocationController {
             URL url = new URL("http://localhost:8080/geoTest_1.html");
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
             String inputLine;
-
+            address=StringEscapeUtils.escapeJavaScript(address);
             content += "<script>var param='"+address+"';</script>\n";
             while ((inputLine = in.readLine()) != null) {
                 content = content+inputLine+"\n";
-                System.out.println(inputLine);
+                //System.out.println(inputLine);
             }
             in.close();
         } catch (IOException e) {
