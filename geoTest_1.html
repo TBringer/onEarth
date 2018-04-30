@@ -33,11 +33,45 @@
   </head>
   <body>
     <div id="floating-panel">
-      <input id="address" type="textbox" value="Sydney, NSW">
+      <input id="address" name="address" type="textbox" value="Sydney, NSW">
       <input id="submit" type="button" value="Geocode">
     </div>
+    <DIV>
+      <input id="user_input_autocomplete_address" name="user_input_autocomplete_address"
+      class="form-control" placeholder="Start typing your address...">
+    </DIV>
     <div id="map"></div>
     <script>
+      //--
+      function initializeAutocomplete(id) {
+  var element = document.getElementById(id);
+  if (element) {
+    var autocomplete = new google.maps.places.Autocomplete(element, { types: ['geocode'] });
+    google.maps.event.addListener(autocomplete, 'place_changed', onPlaceChanged);
+        }
+      }
+
+//--
+function onPlaceChanged() {
+  var place = this.getPlace();
+
+   //console.log(place);  // Uncomment this line to view the full object returned by Google API.
+
+  for (var i in place.address_components) {
+    var component = place.address_components[i];
+    for (var j in component.types) {  // Some types are ["country", "political"]
+      var type_element = document.getElementById(component.types[j]);
+      if (type_element) {
+        type_element.value = component.long_name;
+      }
+    }
+  }
+}
+    //--
+google.maps.event.addDomListener(window, 'load', function() {
+  initializeAutocomplete('address');
+});
+
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 8,
@@ -48,12 +82,13 @@
         document.getElementById('submit').addEventListener('click', function() {
           geocodeAddress(geocoder, map);
         });
-      }
 
+      }
       function geocodeAddress(geocoder, resultsMap) {
         var address = document.getElementById('address').value;
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
+            //alert(results.length);
             resultsMap.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
               map: resultsMap,
@@ -66,7 +101,8 @@
       }
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIsvTYVzmUd0V3vW_Z_uokTwxkomf1FKw&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIsvTYVzmUd0V3vW_Z_uokTwxkomf1FKw&callback=initMap&libraries=places">
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIsvTYVzmUd0V3vW_Z_uokTwxkomf1FKw&libraries=places&callback=initMap" async defer></script>
   </body>
 </html>
