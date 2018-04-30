@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.concurrent.atomic.AtomicLong;
-
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class GeolocationController {
             while ((inputLine = in.readLine()) != null)
             {
                 content=content+inputLine+"\n";
-                System.out.println(inputLine);
+                //System.out.println(inputLine);
             }
             in.close();
         }catch (IOException e)
@@ -54,11 +54,12 @@ public class GeolocationController {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(url.openStream()));
             String inputLine;
+            address=StringEscapeUtils.escapeJavaScript(address);
             content+="<script>var param='"+address+"';</script>\n";
             while ((inputLine = in.readLine()) != null)
             {
                 content=content+inputLine+"\n";
-                System.out.println(inputLine);
+                //System.out.println(inputLine);
             }
             in.close();
         }catch (IOException e)
