@@ -10,7 +10,7 @@ public class Geolocation {
     private long id;
     private String content;
     private final String apiKey="AIzaSyCIsvTYVzmUd0V3vW_Z_uokTwxkomf1FKw";
-    private Map<Integer,String> data =new HashMap<>();
+    private Map<Integer,String> data = new HashMap<>();
 
 
     public Geolocation(long id, String content) {
@@ -18,7 +18,6 @@ public class Geolocation {
         this.content = content;
         this.data.put(toIntExact(id),content);
     }
-
 
     public long getId() {
         return id;
